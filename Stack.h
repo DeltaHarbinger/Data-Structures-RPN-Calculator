@@ -48,34 +48,16 @@ public:
 		if(!top){
 			return 0;
 		}
-
 		int count = 0;
-
 		Stack * tempStack = new Stack();
-
-
-
 		while(top){
 			count++;
 			tempStack -> push(this -> stackTop());
 
 			this -> pop();
 		}
-
-//		while(!empty){
-//			try {
-//				push(tempStack->stackTop());
-//
-//				tempStack->pop();
-//			} catch(int i){
-//				empty = true;
-//			}
-//		}
-
 		for(int x = 0; x < count; x++){
 			this -> push(tempStack->stackTop());
-			std::cout << "Cherry" << std::endl;
-			system("pause");
 			tempStack->pop();
 		}
 
