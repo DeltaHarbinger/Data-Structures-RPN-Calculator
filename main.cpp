@@ -8,6 +8,7 @@ std::string calculatorFace = "";
 static const unsigned char divideSymbol = 246;
 
 double solveEquation(double a, double b, char operation){
+	/* Receives two doubles and an operator, returns an evaluated value. Throws integer if invalid */
 	switch(operation){
 		case '+':
 			return b + a;
