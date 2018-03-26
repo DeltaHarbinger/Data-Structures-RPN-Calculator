@@ -76,4 +76,4 @@ public:
 };
 
 
-#endif //DATASTRUCTURESPROJECT_STACK_H
+#endif
