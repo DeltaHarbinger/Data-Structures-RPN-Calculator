@@ -24,6 +24,7 @@ double solveEquation(double a, double b, char operation){
 }
 
 void calculateOnStack(char operation){
+	/*	Receives operation and executes on two variables removed from stack.	*/
 	double a = numberStack -> stackTop();
 	numberStack -> pop();
 	double b = numberStack -> stackTop();
@@ -32,15 +33,18 @@ void calculateOnStack(char operation){
 }
 
 bool checkInput(char input){
+	/*	Validates which characters a user may enter.	*/
 	std::string validCharacters = "0123456789+-*/ .";
 	return validCharacters.find(input) != std::string::npos;
 }
 
 bool isNumber(std::string s){
+	/*	Validates whether or not value entered is a number.	*/
 	return s.find_first_not_of( "0123456789." ) == std::string::npos;
 }
 
 bool isOperator(std::string s){
+	/*	Validates whether or not value entered is an operator.	*/
 	return s.find_first_not_of( "+-*/" ) == std::string::npos;
 }
 
@@ -66,6 +70,7 @@ void solveFace(std::string face){
 }
 
 std::string trimStringZeroes(std::string s){
+	/*	Deletes characters until a number other than zero or period is found.	*/
 	while(s.back() == '0' && s.size() > 0){
 		s = s.substr(0, s.size() - 1);
 		if(s.back() == '.'){
@@ -76,6 +81,7 @@ std::string trimStringZeroes(std::string s){
 }
 
 void paintCalculator(){
+	/*	Creates Calculator's interface.	*/
 	system("cls");
 	std::cout << "-----------------------------------------------------------------------------------------------------------------------" << std::endl;
 	std::cout << calculatorFace << std::endl;
@@ -104,10 +110,10 @@ int main() {
 
 
 	char input = 0;
-	while(input != 'x') {
+	while(input != 'x') { /*	Entering x exits calculator.	*/
 		while (input != '=' && input != 'x') {
 			paintCalculator();
-			input = getch();
+			input = getch();	/*	Receives user input	*/
 			if (checkInput(input)) {
 				calculatorFace = calculatorFace + input;
 			} else if (input == 8) {
@@ -131,7 +137,7 @@ int main() {
 				} else if (i == -4) {
 					calculatorFace = "Invalid expression";
 				}
-			} catch (const std::out_of_range& oor) {
+			} catch (const std::out_of_range& oor) {	/*	Validates whether or not entered double is too large.	*/
 				calculatorFace = "Number too large\n";
 			}
 

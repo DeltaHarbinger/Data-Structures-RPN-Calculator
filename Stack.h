@@ -1,9 +1,11 @@
 //
-// Created by Brandon Chung on 3/12/2018.
+// Created by Brandon Chung on 3/30/2018.
 //
 
-#ifndef DATASTRUCTURESPROJECT_STACK_H
-#define DATASTRUCTURESPROJECT_STACK_H
+#ifndef DATASTRUCTURESPROJECTREDO_STACK_H
+#define DATASTRUCTURESPROJECTREDO_STACK_H
+
+
 
 #include "Node.h"
 
@@ -15,10 +17,13 @@ private:
 public:
 
 	Stack() {
+		/*	Creates a new stack	*/
 		top = nullptr;
 	}
 
+
 	double stackTop(){
+		/*	Returns data on top of the stack. If stack empty throws integer	*/
 		if(top){
 			return top -> getData();
 		} else {
@@ -26,7 +31,9 @@ public:
 		}
 	}
 
+
 	void pop(){
+		/*	Removes data from top of stack. If stack empty throws integer	*/
 		if(top) {
 			Node *temp = top;
 			top = top->getNextNode();
@@ -36,15 +43,18 @@ public:
 		}
 	}
 
-	void push(double data){
 
+	void push(double data){
+		/*	Enters received data to the stack. */
 		if(Node * temp = new Node(data)){
 			temp -> setNextNode(top);
 			top = temp;
 		}
 	}
 
+
 	int count(){
+		/*	If no item found in stack exits method. Else creates a temporary stack. Counts each item as removed and places into the new stack. When stack is empty, the temporary stack then pushes all it's content back to the original stack.	*/
 		if(!top){
 			return 0;
 		}
@@ -64,7 +74,9 @@ public:
 		return count;
 	}
 
+
 	void empty(){
+		/*	Removes all data from the stack.	*/
 		while(top){
 			Node * temp = top;
 			top = top -> getNextNode();
@@ -76,4 +88,5 @@ public:
 };
 
 
-#endif
+
+#endif //DATASTRUCTURESPROJECTREDO_STACK_H

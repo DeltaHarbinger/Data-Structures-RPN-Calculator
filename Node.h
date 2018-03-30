@@ -1,9 +1,9 @@
 //
-// Created by Brandon Chung on 3/12/2018.
+// Created by Brandon Chung on 3/30/2018.
 //
 
-#ifndef DATASTRUCTURESPROJECT_NODE_H
-#define DATASTRUCTURESPROJECT_NODE_H
+#ifndef DATASTRUCTURESPROJECTREDO_NODE_H
+#define DATASTRUCTURESPROJECTREDO_NODE_H
 
 
 class Node {
@@ -15,27 +15,35 @@ public:
 
 
 	Node(double data) : data(data) {
+		/*	Initializes variables	*/
 		nextNode = nullptr;
 	}
 
+
 	double getData() const {
+		/*	Returns current data	*/
 		return data;
 	}
 
+
 	void setData(double data) {
+		/*	Sets received double to data	*/
 		Node::data = data;
 	}
 
+
 	Node * getNextNode() const {
+		/*	Returns current node pointer	*/
 		return nextNode;
 	}
 
+
 	void setNextNode(Node *nextNode) {
+		/*	Sets received node pointer to nextNode	*/
 		Node::nextNode = nextNode;
 	}
 
 
 };
 
-
-#endif //DATASTRUCTURESPROJECT_NODE_H
+#endif //DATASTRUCTURESPROJECTREDO_NODE_H
