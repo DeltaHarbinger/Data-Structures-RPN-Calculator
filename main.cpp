@@ -6,6 +6,7 @@
 
 Stack * numberStack = new Stack();
 std::string calculatorFace = "";
+double memory = 0.0f;
 static const unsigned char divideSymbol = 246;
 
 double solveEquation(double a, double b, char operation){
@@ -110,12 +111,19 @@ void paintCalculator(){
 
 }
 
+void overwriteMemory(){
+	memory = numberStack -> stackTop();
+}
+
+void loadMemory(){
+	calculatorFace = trimStringZeroes(std::to_string(memory));
+}
+
 void storeAnswer(){
 	std::ofstream writer;
-	writer.open("memory.txt", std::ios::out);
-	std::string answer = std::to_string(numberStack -> stackTop());
+	writer.open("memory.txt", std::ios::out | std::ios::app);
+	std::string answer = trimStringZeroes(std::to_string(memory)) + "\n";
 	writer << answer << std::endl;
-
 	writer.close();
 }
 
@@ -139,7 +147,9 @@ int main() {
 			} else if (input == 8) {
 				calculatorFace = calculatorFace.substr(0, calculatorFace.size() - 1);
 			} else if (input == 'm'){
-				loadAnswer();
+				loadMemory();
+			} else if(input == 'f'){
+				storeAnswer();
 			}
 		}
 		if(input == '=') {
@@ -147,7 +157,7 @@ int main() {
 				solveFace(calculatorFace);
 
 				if (numberStack->count() == 1) {
-					storeAnswer();
+					overwriteMemory();
 					calculatorFace =  calculatorFace + "\n" + std::to_string(numberStack->stackTop());
 				} else {
 					throw -4;
@@ -174,11 +184,14 @@ int main() {
 			input = getch();
 			if (checkInput(input)) {
 				calculatorFace = calculatorFace + input;
+			} else if (input == 8) {
+				calculatorFace = calculatorFace.substr(0, calculatorFace.size() - 1);
+			} else if (input == 'm'){
+				loadMemory();
+			} else if(input == 'f'){
+				storeAnswer();
 			}
-		} else if(input == 'f'){
-
 		}
-
 	}
 
 	return 0;
