@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <sstream>
+#include <fstream>
 #include "Stack.h"
 
 Stack * numberStack = new Stack();
@@ -46,6 +47,10 @@ bool isNumber(std::string s){
 bool isOperator(std::string s){
 	/*	Validates whether or not value entered is an operator.	*/
 	return s.find_first_not_of( "+-*/" ) == std::string::npos;
+}
+
+bool isSpecialCharacter(std::string input){
+	return input.find_first_not_of(("=mcfx" + char(8))) == std::string::npos;
 }
 
 void solveFace(std::string face){
@@ -105,19 +110,36 @@ void paintCalculator(){
 
 }
 
+void storeAnswer(){
+	std::ofstream writer;
+	writer.open("memory.txt", std::ios::out);
+	std::string answer = std::to_string(numberStack -> stackTop());
+	writer << answer << std::endl;
+
+	writer.close();
+}
+
+void loadAnswer(){
+	std::ifstream reader;
+	reader.open("memory.txt", std::ios::in);
+	std::string temp;
+	reader >> temp;
+	calculatorFace = trimStringZeroes(temp);
+	reader.close();
+}
+
 int main() {
-
-
-
 	char input = 0;
 	while(input != 'x') { /*	Entering x exits calculator.	*/
-		while (input != '=' && input != 'x') {
+		while (input != 'x' && input != '=') {
 			paintCalculator();
 			input = getch();	/*	Receives user input	*/
 			if (checkInput(input)) {
 				calculatorFace = calculatorFace + input;
 			} else if (input == 8) {
 				calculatorFace = calculatorFace.substr(0, calculatorFace.size() - 1);
+			} else if (input == 'm'){
+				loadAnswer();
 			}
 		}
 		if(input == '=') {
@@ -125,6 +147,7 @@ int main() {
 				solveFace(calculatorFace);
 
 				if (numberStack->count() == 1) {
+					storeAnswer();
 					calculatorFace =  calculatorFace + "\n" + std::to_string(numberStack->stackTop());
 				} else {
 					throw -4;
@@ -152,6 +175,8 @@ int main() {
 			if (checkInput(input)) {
 				calculatorFace = calculatorFace + input;
 			}
+		} else if(input == 'f'){
+
 		}
 
 	}
