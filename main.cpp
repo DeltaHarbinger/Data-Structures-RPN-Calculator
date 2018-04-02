@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include "Stack.h"
+#include "OperatorStack.h"
 
 Stack * numberStack = new Stack();
 std::string calculatorFace = "";
@@ -93,6 +94,14 @@ void paintCalculator(){
 	std::cout << calculatorFace << std::endl;
 	std::cout << "-----------------------------------------------------------------------------------------------------------------------" << std::endl;
 	std::cout << std::endl << std::endl;
+	std::cout << "\t-------" << std::endl;
+	std::cout << "\t|  f  |" << std::endl;
+	std::cout << "\t-------" << std::endl;
+	std::cout << std::endl << std::endl;
+	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
+	std::cout << "\t|  x  |\t\t\t|  m  |\t\t\t\t|  c  |\t\t\t\t|  b  |" << std::endl;
+	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
+	std::cout << std::endl << std::endl;
 	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
 	std::cout << "\t|  -  |\t\t\t|  7  |\t\t\t\t|  8  |\t\t\t\t|  9  |" << std::endl;
 	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
@@ -106,9 +115,13 @@ void paintCalculator(){
 	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
 	std::cout << std::endl << std::endl;
 	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
-	std::cout << "\t|  " << divideSymbol << "  |\t\t\t|  0  |\t\t\t\t|  .  |\t\t\t\t|  3  |" << std::endl;
+	std::cout << "\t|  /  |\t\t\t|  0  |\t\t\t\t|  .  |\t\t\t\t|  =  |" << std::endl;
 	std::cout << "\t-------\t\t\t-------\t\t\t\t-------\t\t\t\t-------" << std::endl;
 
+}
+
+void clearFace(){
+	calculatorFace = "";
 }
 
 void overwriteMemory(){
@@ -127,13 +140,57 @@ void storeAnswer(){
 	writer.close();
 }
 
-void loadAnswer(){
-	std::ifstream reader;
-	reader.open("memory.txt", std::ios::in);
-	std::string temp;
-	reader >> temp;
-	calculatorFace = trimStringZeroes(temp);
-	reader.close();
+//void loadAnswer(){
+//	std::ifstream reader;
+//	reader.open("memory.txt", std::ios::in);
+//	std::string temp;
+//	reader >> temp;
+//	calculatorFace = trimStringZeroes(temp);
+//	reader.close();
+//}
+
+int operatorPriority(char c){
+	if(c == '+' || c == '-'){
+		return 1;
+	} else {
+		return 2;
+	}
+}
+
+std::string convertInfixToPostfix(std::string infix){
+	OperatorStack * operatorStack = new OperatorStack();
+	std::string postfix = "";
+	std::stringstream source;
+	source << infix;
+	while(source.rdbuf() -> in_avail()){
+		std::string data;
+		source >> data;
+		if(isNumber(data)){
+			postfix = postfix + data + " ";
+		} else if(isOperator(data) && data.length() == 1){
+			if(operatorStack -> count() == 0){
+				operatorStack -> push(data[0]);
+			} else {
+				if(operatorPriority(data[0]) < operatorPriority(operatorStack -> stackTop())) {
+					while (operatorStack->count() > 0 && operatorPriority(data[0]) < operatorPriority(operatorStack->stackTop())) {
+						postfix = postfix + (operatorStack->stackTop()) + " ";
+						std::cout << "ddd" << std::endl;
+						operatorStack->pop();
+					}
+				}
+				operatorStack -> push(data[0]);
+			}
+		} else {
+			operatorStack -> empty();
+			throw -5;
+		}
+	}
+	while(operatorStack -> count() > 0){
+		postfix = postfix + (operatorStack -> stackTop()) + " ";
+		operatorStack -> pop();
+	}
+	delete operatorStack;
+	return postfix;
 }
 
 int main() {
@@ -150,6 +207,10 @@ int main() {
 				loadMemory();
 			} else if(input == 'f'){
 				storeAnswer();
+			} else if(input == 'c'){
+				clearFace();
+			} else if(input == 'p'){
+				calculatorFace = convertInfixToPostfix(calculatorFace);
 			}
 		}
 		if(input == '=') {
@@ -177,7 +238,7 @@ int main() {
 			calculatorFace = trimStringZeroes(calculatorFace);
 
 			paintCalculator();
-			calculatorFace = "";
+			clearFace();
 
 			numberStack->empty();
 
@@ -190,6 +251,8 @@ int main() {
 				loadMemory();
 			} else if(input == 'f'){
 				storeAnswer();
+			} else if(input == 'c'){
+				clearFace();
 			}
 		}
 	}
