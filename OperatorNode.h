@@ -18,7 +18,7 @@ public:
 	}
 
 	OperatorNode() {
-		data = '';
+		data = 0;
 	}
 
 	char getData(){
