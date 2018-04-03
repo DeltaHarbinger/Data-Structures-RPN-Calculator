@@ -210,7 +210,11 @@ int main() {
 			} else if(input == 'c'){
 				clearFace();
 			} else if(input == 'p'){
-				calculatorFace = convertInfixToPostfix(calculatorFace);
+				try {
+					calculatorFace = convertInfixToPostfix(calculatorFace);
+				} catch (int i){
+					calculatorFace = "";
+				}
 			}
 		}
 		if(input == '=') {
