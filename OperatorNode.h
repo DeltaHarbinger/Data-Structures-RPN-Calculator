@@ -1,6 +1,5 @@
-
 //
-// Created by Brandon Chung on 3/30/2018.
+// Created by Brandon Chung, Ryhane Roberts, Phillip Drummond on 3/30/2018.
 //
 
 #ifndef DATASTRUCTURESPROJECTREDO_OPERATORNODE_H
